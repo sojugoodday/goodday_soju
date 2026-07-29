@@ -1,0 +1,665 @@
+/* @font-face 설정 */
+@font-face {
+  font-family: 'EllisDigitalCoding';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EliceDigitalBaeum_Regular.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NeoDonggeunmo';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #192e62;
+  font-family: 'EllisDigitalCoding', monospace, sans-serif;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #192e62;
+}
+
+#game-scaler {
+  width: 450px;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
+}
+
+#game-container {
+  position: relative;
+  width: 450px;
+  height: 800px;
+  box-shadow: 0 0 35px rgba(25, 46, 98, 0.6);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 4px solid #eef6ff;
+  background-color: #192e62;
+  flex-shrink: 0;
+}
+
+/* 폭죽 Canvas (최상단) */
+#fireworks-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* 메인 화면 */
+#start-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #192e62 0%, #0d1a3a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  gap: 25px;
+  padding: 20px;
+}
+
+.main-title-box {
+  text-align: center;
+}
+
+.main-title-sub {
+  font-size: 18px;
+  color: #38c8ff;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.main-title {
+  font-size: 32px;
+  color: #eef6ff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.3;
+}
+
+/* 🎯 난이도 버튼 컨테이너 & 버튼 정렬 수정 */
+.difficulty-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 85%;
+}
+
+.btn-diff {
+  font-family: 'NeoDonggeunmo', monospace;
+  font-size: 18px;
+  padding: 14px 20px;
+  border: 2px solid #eef6ff;
+  border-radius: 12px;
+  background: rgba(238, 246, 255, 0.1);
+  color: #eef6ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: flex-start; /* ⭐ 왼쪽에서부터 정렬 시작 */
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.btn-diff:hover,
+.btn-diff:active {
+  transform: scale(1.03);
+  background: #eef6ff;
+  color: #192e62;
+}
+
+.diff-title-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* ⭐ 병 아이콘 영역의 너비를 90px로 고정하여 글자(하, 중, 상)의 시작 위치를 수직 일렬로 정렬 */
+.bottle-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.diff-bottle-icon {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  margin-right: 2px;
+}
+
+/* ⭐ 글자 정렬 */
+.diff-label {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.btn-easy {
+  border-color: #00ff9d;
+}
+.btn-easy .diff-label {
+  color: #00ff9d;
+}
+
+.btn-normal {
+  border-color: #ffea00;
+}
+.btn-normal .diff-label {
+  color: #ffea00;
+}
+
+.btn-hard {
+  border-color: #ff3366;
+}
+.btn-hard .diff-label {
+  color: #ff3366;
+}
+
+.btn-diff:hover .diff-label {
+  color: #192e62 !important;
+}
+
+/* UI 헤더 & 하단 카드 */
+.ui-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 60px;
+  background: rgba(25, 46, 98, 0.85);
+  border: 2px solid #eef6ff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.title {
+  font-size: 20px;
+  color: #eef6ff;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.bottom-ui-container {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  z-index: 30;
+}
+
+.ui-card {
+  flex: 1;
+  background: rgba(238, 246, 255, 0.92);
+  border: 2px solid #192e62;
+  border-radius: 12px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.ui-card .label {
+  font-size: 13px;
+  color: #192e62;
+  font-weight: bold;
+}
+
+/* ⚙️ 우측 상단 버튼 그룹 스타일 */
+.side-btn-group {
+  position: absolute;
+  top: 90px; /* 헤더 바로 아래 위치 */
+  right: 16px;
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 10px;
+  z-index: 50; /* 게임 요소보다 위 */
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(25, 46, 98, 0.85);
+  border: 2px solid #eef6ff;
+  color: #eef6ff;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.icon-btn:hover,
+.icon-btn:active {
+  transform: scale(1.1);
+  background: #eef6ff;
+  color: #192e62;
+}
+
+.chicken-gauge,
+.life-gauge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.leg-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0);
+  opacity: 0.35;
+  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.3s ease;
+}
+
+.leg-icon.eaten {
+  filter: brightness(1);
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.heart-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.heart-icon.lost {
+  opacity: 0.15;
+  filter: grayscale(100%);
+  transform: scale(0.7);
+}
+
+/* 스테이지 영역 */
+.samgyetang-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.part {
+  position: absolute;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bg-table {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.part-body {
+  top: 25%;
+  left: 15%;
+  width: 75%;
+  z-index: 2;
+}
+#part-1 {
+  top: 37%;
+  left: 39%;
+  width: 38%;
+  z-index: 5;
+  transform: rotate(-10deg);
+}
+#part-2 {
+  top: 33%;
+  left: 19%;
+  width: 26%;
+  z-index: 4;
+}
+#part-3 {
+  top: 25%;
+  left: 29%;
+  width: 29%;
+  z-index: 3;
+}
+#part-4 {
+  top: 25%;
+  left: 45%;
+  width: 37%;
+  z-index: 2;
+}
+
+.part.eaten {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.8) !important;
+  pointer-events: none;
+}
+
+/* 소주잔 애니메이션 */
+@keyframes glassMoveNormal {
+  0% {
+    left: -2%;
+  }
+  50% {
+    left: 20%;
+  }
+  100% {
+    left: -2%;
+  }
+}
+
+@keyframes glassFlyHard {
+  0% {
+    left: -5%;
+    top: 52%;
+  }
+  25% {
+    left: 22%;
+    top: 46%;
+  }
+  50% {
+    left: 10%;
+    top: 58%;
+  }
+  75% {
+    left: -3%;
+    top: 48%;
+  }
+  100% {
+    left: -5%;
+    top: 52%;
+  }
+}
+
+.glass-wrapper {
+  position: absolute;
+  top: 52%;
+  left: 3%;
+  width: 266px;
+  height: 293px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.glass-wrapper.diff-easy {
+  animation: none;
+}
+.glass-wrapper.diff-normal {
+  animation: glassMoveNormal 0.8s ease-in-out infinite;
+}
+.glass-wrapper.diff-hard {
+  animation: glassFlyHard 1.2s ease-in-out infinite;
+}
+
+.glass-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 3;
+}
+
+.soju-liquid {
+  position: absolute;
+  bottom: 30%;
+  left: 27%;
+  width: 47%;
+  height: 0%;
+  background: linear-gradient(
+    180deg,
+    rgba(180, 235, 255, 0.95) 0%,
+    rgba(0, 180, 216, 0.9) 100%
+  );
+  border-radius: 0 0 10px 10px;
+  z-index: 1;
+  box-shadow: 0 0 8px rgba(180, 235, 255, 0.6);
+}
+
+.target-line {
+  position: absolute;
+  left: 20%;
+  width: 60%;
+  height: 0 !important;
+  border-top: 3px dashed #00ff9d;
+  z-index: 4;
+  box-shadow: 0 0 8px #00ff9d;
+  pointer-events: none;
+}
+
+.target-label {
+  position: absolute;
+  left: -50px;
+  top: -12px;
+  font-size: 15px;
+  color: #192e62;
+  background: #00ff9d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#part-bottle {
+  top: 18%;
+  right: -7%;
+  width: 37%;
+  z-index: 20;
+  cursor: grab;
+  transform-origin: 10% 30%;
+  transform: scale(1) rotate(0deg);
+  transition: transform 0.15s ease-out;
+}
+
+#part-bottle:active {
+  cursor: grabbing;
+}
+
+#part-bottle.pouring {
+  transform: translate(-190px, 220px) rotate(-65deg);
+}
+
+/* 💬 팝업 멘트 스타일 수정 (시시각각 뜨는 멘트) */
+#action-popup {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  font-family: 'NeoDonggeunmo', monospace;
+  font-size: 2.3rem; /* ⭐ 글자 크기 대폭 확대 */
+  font-weight: 900;
+  color: #ffea00; /* ⭐ 기본 노란색 설정 */
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
+    3px 3px 0 #000, 0px 4px 12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  visibility: hidden; /* ⭐ 기본 상태 숨김 */
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.25s, visibility 0.25s;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+#action-popup.show {
+  opacity: 1;
+  visibility: visible; /* ⭐ 화면에 활성화되도록 수정 */
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* 팝업 모달 스타일 */
+.modal-overlay {
+  position: absolute;
+  font-family: 'EllisDigitalCoding';
+  font-weight: 500;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 26, 58, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  backdrop-filter: blur(5px);
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  width: 85%;
+  background: #eef6ff;
+  border: 3px solid #192e62;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: modalUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-box h3 {
+  color: #192e62;
+  font-size: 22px;
+  margin-bottom: 12px;
+  word-break: keep-all;
+}
+
+.modal-box p {
+  color: #333;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  word-break: keep-all;
+}
+
+.modal-btn {
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  background: #192e62;
+  color: #00ff9d;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn:active {
+  transform: scale(0.96);
+}
+
+/* 🐔 닭 탈출 연출용 박스 */
+#chicken-escape-box {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* 💥 POOF 연기 이펙트 */
+.poof-effect {
+  position: absolute;
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffea00;
+  text-shadow: 0 0 8px #ff5577, 0 0 15px #ff0000;
+  animation: poofPop 0.4s ease-out forwards;
+}
+
+@keyframes poofPop {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* 닭 이미지 기본 스타일 */
+#escaping-chicken {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(-10%);
+  transition: transform 1.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.8s ease-in;
+}
+
+/* 왼쪽으로 도망치는 애니메이션 */
+#escaping-chicken.run-away-left {
+  transform: translate(-500px, -10%) scale(0.85);
+  opacity: 0;
+}

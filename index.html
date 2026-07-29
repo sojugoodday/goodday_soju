@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>좋은데이 X 말복 이벤트 - 1인칭 소주 따르기 게임</title>
+    <!-- CSS 스타일시트 연결 -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="game-scaler">
+      <div id="game-container">
+        <!-- 📜 모달 팝업 (안내 & 최종 결과용) -->
+        <div id="modal-overlay" class="modal-overlay">
+          <div class="modal-box">
+            <h3 id="modal-title">말복 특선!</h3>
+            <p id="modal-body"></p>
+            <button id="modal-btn" class="modal-btn">시작하기</button>
+          </div>
+        </div>
+        <!-- 폭죽 터짐 Canvas -->
+        <canvas id="fireworks-canvas"></canvas>
+
+        <!-- 1. 난이도 선택 메인 화면 -->
+        <div id="start-screen">
+          <div class="main-title-box">
+            <div class="main-title-sub">좋은데이 X 말복 이벤트</div>
+            <div class="main-title">1인칭 소주따르기<br />타이밍 잔!</div>
+          </div>
+
+          <div class="difficulty-container">
+            <button class="btn-diff btn-easy" onclick="startGame('easy')">
+              <div class="diff-title-group">
+                <div class="bottle-icons">
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                </div>
+                <span class="diff-label">하 (Easy)</span>
+              </div>
+            </button>
+
+            <button class="btn-diff btn-normal" onclick="startGame('normal')">
+              <div class="diff-title-group">
+                <div class="bottle-icons">
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                </div>
+                <span class="diff-label">중 (Normal)</span>
+              </div>
+            </button>
+
+            <button class="btn-diff btn-hard" onclick="startGame('hard')">
+              <div class="diff-title-group">
+                <div class="bottle-icons">
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                  <img
+                    src="./image/좋은데이픽셀.png"
+                    class="diff-bottle-icon"
+                    alt="소주병"
+                  />
+                </div>
+                <span class="diff-label">상 (Hard)</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 게임 영역 -->
+        <div class="ui-header">
+          <div class="title" id="game-title">좋은데이 X 말복 이벤트</div>
+        </div>
+
+<!-- ⚙️ 우측 상단 기능 버튼 그룹 (다시하기 / 환경설정 / 공유) -->
+        <div class="side-btn-group">
+          <!-- 다시하기 (현재 난이도로 게임 재시작) -->
+          <button id="btn-restart" class="icon-btn" onclick="restartGame()" title="다시하기">
+            🔄
+          </button>
+          <!-- 환경설정 (난이도 선택 화면으로 돌아가기) -->
+          <button id="btn-settings" class="icon-btn" onclick="openSettings()" title="난이도 변경">
+            ⚙️
+          </button>
+          <!-- 공유하기 (링크 복사 / 모바일 공유) -->
+          <button id="btn-share" class="icon-btn" onclick="shareGame()" title="공유하기">
+            🔗
+          </button>
+        </div>
+        
+        <div class="samgyetang-stage">
+          <img src="./image/빈뚝배기2.png" class="part bg-table" alt="배경" />
+          <img
+            src="./image/몸통.png"
+            id="part-body"
+            class="part part-body"
+            alt="몸통"
+          />
+          <img src="./image/다리1.png" id="part-1" class="part" alt="다리1" />
+          <img src="./image/다리2.png" id="part-2" class="part" alt="다리2" />
+          <img src="./image/다리3.png" id="part-3" class="part" alt="날개1" />
+          <img src="./image/다리4.png" id="part-4" class="part" alt="날개2" />
+
+          <!-- 🐔 [추가] 실패 연출용 닭 도망치기 박스 -->
+          <div id="chicken-escape-box" class="chicken-escape-box">
+            <div id="poof-effect" class="poof-effect">💥 POOF!</div>
+            <img
+              id="escaping-chicken"
+              src="./image/닭1.png"
+              alt="도망치는 닭"
+            />
+          </div>
+          <!-- 소주잔 -->
+          <div class="glass-wrapper" id="glass-wrapper">
+            <div class="soju-liquid" id="soju-liquid"></div>
+            <div class="target-line" id="target-line">
+              <span class="target-label">적정선</span>
+            </div>
+            <img src="./image/소주잔2.png" class="glass-img" alt="소주잔" />
+          </div>
+
+          <!-- 소주병 -->
+          <img
+            src="./image/좋은데이병2.png"
+            id="part-bottle"
+            class="part"
+            alt="좋은데이 병"
+          />
+
+          <div id="action-popup" class="action-popup">성공! 캬~</div>
+        </div>
+
+        <!-- 하단 UI 카드 -->
+        <div class="bottom-ui-container">
+          <div class="ui-card">
+            <div class="label">❤️ 남은 기회</div>
+            <div class="life-gauge" id="life-gauge">
+              <span class="heart-icon" id="heart-0">❤️</span>
+              <span class="heart-icon" id="heart-1">❤️</span>
+              <span class="heart-icon" id="heart-2">❤️</span>
+              <span class="heart-icon" id="heart-3">❤️</span>
+              <span class="heart-icon" id="heart-4">❤️</span>
+              <span class="heart-icon" id="heart-5">❤️</span>
+              <span class="heart-icon" id="heart-6">❤️</span>
+              <span class="heart-icon" id="heart-7">❤️</span>
+            </div>
+          </div>
+
+          <div class="ui-card">
+            <div class="label">🍗 먹은 부위</div>
+            <div class="chicken-gauge">
+              <img
+                src="./image/다리1.png"
+                class="leg-icon"
+                id="leg-0"
+                alt="부위"
+              />
+              <img
+                src="./image/다리1.png"
+                class="leg-icon"
+                id="leg-1"
+                alt="부위"
+              />
+              <img
+                src="./image/다리1.png"
+                class="leg-icon"
+                id="leg-2"
+                alt="부위"
+              />
+              <img
+                src="./image/다리1.png"
+                class="leg-icon"
+                id="leg-3"
+                alt="부위"
+              />
+              <img
+                src="./image/다리1.png"
+                class="leg-icon"
+                id="leg-4"
+                alt="부위"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/audio.js"></script>
+    <script src="js/fireworks.js"></script>
+    <script src="js/game.js"></script>
+    <!-- 기존 오디오 태그들 근처에 추가 -->
+    <audio
+      id="sfx-chicken"
+      src="https://assets.mixkit.co/active_storage/sfx/2281/2281-preview.mp3"
+      preload="auto"
+    ></audio>
+  </body>
+</html>
