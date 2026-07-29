@@ -65,7 +65,7 @@ function startGame(diff) {
 function showInstructionModal() {
   modalTitle.textContent = '🐔 말복 특선! 몸보신하러 왔나?';
   modalBody.innerHTML =
-    '말복이라 삼계탕 집에 온 당신!<br>삼계탕에는 자고로 <b>좋은데이</b> 한 잔 딱 <br>채워줘야 몸보신 완성인 거 알제?<br><br>어디 함 콸콸콸 따라봐라!<br>뚝배기 싹 비울 때까지 가보자고~ 🔥';
+    '말복이라 삼계탕 집에 온 당신!<br>삼계탕에는 자고로 <b>좋은데이</b> 한 잔 딱 <br>채워줘야 몸보신 완성인 거 알제?<br><br>닭 식기 전에 얼른 함 따라봐라!<br>뚝배기 싹 비울 때까지 가보자고~ 🔥';
   modalBtn.textContent = '시작하기';
 
   modalBtn.onclick = () => {
