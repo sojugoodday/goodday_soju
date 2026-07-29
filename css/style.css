@@ -1,4 +1,6 @@
-/* @font-face 설정 */
+/* ==========================================
+   🔤 웹폰트 설정 (@font-face)
+   ========================================== */
 @font-face {
   font-family: 'EllisDigitalCoding';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EliceDigitalBaeum_Regular.woff2')
@@ -6,6 +8,7 @@
   font-weight: 400;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'NeoDonggeunmo';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff')
@@ -14,6 +17,9 @@
   font-display: swap;
 }
 
+/* ==========================================
+   🧹 기본 리셋 및 레이아웃 설정
+   ========================================== */
 * {
   box-sizing: border-box;
   user-select: none;
@@ -57,7 +63,7 @@ body {
   flex-shrink: 0;
 }
 
-/* 폭죽 Canvas (최상단) */
+/* 🎆 폭죽 Canvas (최상단) */
 #fireworks-canvas {
   position: absolute;
   top: 0;
@@ -68,7 +74,9 @@ body {
   pointer-events: none;
 }
 
-/* 메인 화면 */
+/* ==========================================
+   🚀 메인 시작 화면 & 난이도 선택 UI
+   ========================================== */
 #start-screen {
   position: absolute;
   top: 0;
@@ -103,7 +111,6 @@ body {
   line-height: 1.3;
 }
 
-/* 🎯 난이도 버튼 컨테이너 & 버튼 정렬 수정 */
 .difficulty-container {
   display: flex;
   flex-direction: column;
@@ -122,7 +129,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  justify-content: flex-start; /* ⭐ 왼쪽에서부터 정렬 시작 */
+  justify-content: flex-start;
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
@@ -141,7 +148,6 @@ body {
   width: 100%;
 }
 
-/* ⭐ 병 아이콘 영역의 너비를 90px로 고정하여 글자(하, 중, 상)의 시작 위치를 수직 일렬로 정렬 */
 .bottle-icons {
   display: flex;
   align-items: center;
@@ -159,7 +165,6 @@ body {
   margin-right: 2px;
 }
 
-/* ⭐ 글자 정렬 */
 .diff-label {
   font-size: 18px;
   font-weight: bold;
@@ -191,7 +196,9 @@ body {
   color: #192e62 !important;
 }
 
-/* UI 헤더 & 하단 카드 */
+/* ==========================================
+   📊 게임 내 상/하단 UI 헤더 및 카운터
+   ========================================== */
 .ui-header {
   position: absolute;
   top: 20px;
@@ -250,15 +257,15 @@ body {
   font-weight: bold;
 }
 
-/* ⚙️ 우측 상단 버튼 그룹 스타일 */
+/* ⚙️ 우측 상단 사이드 버튼 그룹 */
 .side-btn-group {
   position: absolute;
-  top: 90px; /* 헤더 바로 아래 위치 */
+  top: 90px;
   right: 16px;
   display: flex;
-  flex-direction: column; /* 세로 정렬 */
+  flex-direction: column;
   gap: 10px;
-  z-index: 50; /* 게임 요소보다 위 */
+  z-index: 50;
 }
 
 .icon-btn {
@@ -319,7 +326,9 @@ body {
   transform: scale(0.7);
 }
 
-/* 스테이지 영역 */
+/* ==========================================
+   🍲 삼계탕 및 오브젝트 스테이지
+   ========================================== */
 .samgyetang-stage {
   position: absolute;
   top: 0;
@@ -343,44 +352,56 @@ body {
 }
 
 .part-body {
-  top: 25%;
+  top: 27%;
   left: 15%;
   width: 75%;
   z-index: 2;
 }
+
 #part-1 {
-  top: 37%;
-  left: 39%;
-  width: 38%;
+  top: 38%;
+  left: 36%;
+  width: 41%;
   z-index: 5;
   transform: rotate(-10deg);
 }
+
 #part-2 {
-  top: 33%;
-  left: 19%;
+  top: 36%;
+  left: 21%;
   width: 26%;
   z-index: 4;
 }
+
 #part-3 {
-  top: 25%;
-  left: 29%;
-  width: 29%;
+  top: 29%;
+  left: 26%;
+  width: 26%;
   z-index: 3;
+  transform: rotate(-10deg);
 }
+
 #part-4 {
-  top: 25%;
-  left: 45%;
-  width: 37%;
+  top: 27%;
+  left: 48%;
+  width: 35%;
   z-index: 2;
 }
 
+/* ==========================================
+   🍗 먹은 부위 숨김 처리
+   ========================================== */
 .part.eaten {
-  opacity: 0;
+  opacity: 0 !important;
+  visibility: hidden !important;
   transform: translateY(-30px) scale(0.8) !important;
-  pointer-events: none;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease !important;
 }
 
-/* 소주잔 애니메이션 */
+/* ==========================================
+   🍶 소주잔 및 따르기 동작 애니메이션
+   ========================================== */
 @keyframes glassMoveNormal {
   0% {
     left: -2%;
@@ -420,7 +441,7 @@ body {
   position: absolute;
   top: 52%;
   left: 3%;
-  width: 266px;
+  width: 239px;
   height: 293px;
   z-index: 10;
   pointer-events: none;
@@ -429,9 +450,11 @@ body {
 .glass-wrapper.diff-easy {
   animation: none;
 }
+
 .glass-wrapper.diff-normal {
   animation: glassMoveNormal 0.8s ease-in-out infinite;
 }
+
 .glass-wrapper.diff-hard {
   animation: glassFlyHard 1.2s ease-in-out infinite;
 }
@@ -446,26 +469,27 @@ body {
   z-index: 3;
 }
 
+/* 💡 잔 높이에 맞춰 수위 오르는 영역 확대 수정 */
 .soju-liquid {
   position: absolute;
-  bottom: 30%;
-  left: 27%;
-  width: 47%;
+  bottom: 20%; /* 잔 바닥 위치로 하향 */
+  left: 22%;
+  width: 56%;
   height: 0%;
   background: linear-gradient(
     180deg,
     rgba(180, 235, 255, 0.95) 0%,
     rgba(0, 180, 216, 0.9) 100%
   );
-  border-radius: 0 0 10px 10px;
-  z-index: 1;
-  box-shadow: 0 0 8px rgba(180, 235, 255, 0.6);
+  border-radius: 0 0 12px 12px;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(180, 235, 255, 0.7);
 }
 
 .target-line {
   position: absolute;
-  left: 20%;
-  width: 60%;
+  left: 18%;
+  width: 64%;
   height: 0 !important;
   border-top: 3px dashed #00ff9d;
   z-index: 4;
@@ -506,22 +530,24 @@ body {
   transform: translate(-190px, 220px) rotate(-65deg);
 }
 
-/* 💬 팝업 멘트 스타일 수정 (시시각각 뜨는 멘트) */
+/* ==========================================
+   💬 실시간 액션 팝업 & 모달 팝업
+   ========================================== */
 #action-popup {
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.8);
   font-family: 'NeoDonggeunmo', monospace;
-  font-size: 2.3rem; /* ⭐ 글자 크기 대폭 확대 */
+  font-size: 2.3rem;
   font-weight: 900;
-  color: #ffea00; /* ⭐ 기본 노란색 설정 */
+  color: #ffea00;
   text-align: center;
   white-space: nowrap;
   text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
     3px 3px 0 #000, 0px 4px 12px rgba(0, 0, 0, 0.8);
   opacity: 0;
-  visibility: hidden; /* ⭐ 기본 상태 숨김 */
+  visibility: hidden;
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     opacity 0.25s, visibility 0.25s;
   z-index: 10000;
@@ -530,11 +556,10 @@ body {
 
 #action-popup.show {
   opacity: 1;
-  visibility: visible; /* ⭐ 화면에 활성화되도록 수정 */
+  visibility: visible;
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* 팝업 모달 스타일 */
 .modal-overlay {
   position: absolute;
   font-family: 'EllisDigitalCoding';
@@ -609,7 +634,9 @@ body {
   transform: scale(0.96);
 }
 
-/* 🐔 닭 탈출 연출용 박스 */
+/* ==========================================
+   🐔 최종 실패 닭 탈출 연출
+   ========================================== */
 #chicken-escape-box {
   display: none;
   position: absolute;
@@ -624,7 +651,6 @@ body {
   pointer-events: none;
 }
 
-/* 💥 POOF 연기 이펙트 */
 .poof-effect {
   position: absolute;
   font-size: 32px;
@@ -649,7 +675,6 @@ body {
   }
 }
 
-/* 닭 이미지 기본 스타일 */
 #escaping-chicken {
   width: 300px;
   height: auto;
@@ -658,8 +683,33 @@ body {
   transition: transform 1.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.8s ease-in;
 }
 
-/* 왼쪽으로 도망치는 애니메이션 */
 #escaping-chicken.run-away-left {
   transform: translate(-500px, -10%) scale(0.85);
   opacity: 0;
+}
+
+/* ==========================================
+   ⚙️ 난이도 설정 모달 스타일
+   ========================================== */
+.settings-modal-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.popup-diff-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.modal-btn.cancel-btn {
+  background: #6c757d;
+  color: #ffffff;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.modal-btn.cancel-btn:active {
+  background: #495057;
 }
